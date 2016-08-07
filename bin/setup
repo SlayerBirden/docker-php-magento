@@ -7,3 +7,6 @@ echo "* * * * * /usr/local/bin/php /srv/www/bin/magento cron:run | grep -v 'Ran 
 
 # Start the cron service
 /usr/sbin/cron
+
+# Start the php-fpm service
+/usr/local/sbin/php-fpm
