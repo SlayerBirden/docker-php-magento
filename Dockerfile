@@ -4,6 +4,7 @@ MAINTAINER Oleg Kulik <olegkulik1985@gmail.com>
 RUN apt-get update \
   && apt-get install -y \
     cron \
+    gettext \
     libfreetype6-dev \
     libicu-dev \
     libjpeg62-turbo-dev \
@@ -31,7 +32,14 @@ RUN php -r "if (hash_file('SHA384', 'composer-setup.php') === 'e115a8dc7871f15d8
 RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 RUN php -r "unlink('composer-setup.php');"
 
+ENV PHP_MEMORY_LIMIT 2G
+ENV PHP_MAX_EXEC_TIME 1800
+ENV PHP_MAX_INPUT_TIME 1800
+
 COPY bin/* /usr/local/bin/
+COPY assets/php/templates/* /usr/local/etc/php/
+
+RUN envsubst < /usr/local/etc/php/php.ini.template > /usr/local/etc/php/php.ini
 
 WORKDIR /srv/www
 
