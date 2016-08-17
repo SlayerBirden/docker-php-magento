@@ -5,12 +5,14 @@ RUN apt-get update \
   && apt-get install -y \
     cron \
     gettext \
+    vim \
     libfreetype6-dev \
     libicu-dev \
     libjpeg62-turbo-dev \
     libmcrypt-dev \
     libpng12-dev \
     libxslt1-dev
+RUN pecl install xdebug
 
 RUN docker-php-ext-configure \
   gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
@@ -25,6 +27,19 @@ RUN docker-php-ext-install \
   xsl \
   zip \
   bcmath
+
+# configure xdebug
+RUN echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)\n\
+xdebug.remote_enable=1\n\
+xdebug.profiler_enable_trigger=1\n\
+xdebug.profiler_output_dir\n\
+xdebug.remote_log=/var/log/xdebug.remote.log\n\
+xdebug.trace_enable_trigger=1\n\
+xdebug.trace_output_dir=/tmp/traces"\
+ >> /usr/local/etc/php/conf.d/xdebug.ini
+
+RUN touch /var/log/xdebug.remote.log
+RUN chmod 777 /var/log/xdebug.remote.log
 
 # Install composer
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
