@@ -32,7 +32,7 @@ RUN docker-php-ext-install \
 RUN echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)\n\
 xdebug.remote_enable=1\n\
 xdebug.profiler_enable_trigger=1\n\
-xdebug.profiler_output_dir\n\
+xdebug.profiler_output_dir=/tmp/profiles\n\
 xdebug.remote_log=/var/log/xdebug.remote.log\n\
 xdebug.trace_enable_trigger=1\n\
 xdebug.trace_output_dir=/tmp/traces"\
