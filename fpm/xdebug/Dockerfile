@@ -51,8 +51,8 @@ ENV PHP_MEMORY_LIMIT 2G
 ENV PHP_MAX_EXEC_TIME 1800
 ENV PHP_MAX_INPUT_TIME 1800
 
-COPY bin/* /usr/local/bin/
-COPY assets/php/templates/* /usr/local/etc/php/
+COPY ../../bin/* /usr/local/bin/
+COPY ../../assets/php/templates/* /usr/local/etc/php/
 
 RUN envsubst < /usr/local/etc/php/php.ini.template > /usr/local/etc/php/php.ini
 
