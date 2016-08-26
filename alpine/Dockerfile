@@ -1,19 +1,5 @@
-FROM php:7-fpm
+FROM php:7-fpm-alpine
 MAINTAINER Oleg Kulik <olegkulik1985@gmail.com>
-
-RUN apt-get update \
-  && apt-get install -y \
-    cron \
-    gettext \
-    libfreetype6-dev \
-    libicu-dev \
-    libjpeg62-turbo-dev \
-    libmcrypt-dev \
-    libpng12-dev \
-    libxslt1-dev
-
-RUN docker-php-ext-configure \
-  gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
 
 RUN docker-php-ext-install \
   gd \
@@ -36,10 +22,16 @@ ENV PHP_MEMORY_LIMIT 2G
 ENV PHP_MAX_EXEC_TIME 1800
 ENV PHP_MAX_INPUT_TIME 1800
 
-COPY ../bin/* /usr/local/bin/
-COPY ../assets/php/templates/* /usr/local/etc/php/
+COPY bin/* /usr/local/bin/
 
-RUN envsubst < /usr/local/etc/php/php.ini.template > /usr/local/etc/php/php.ini
+RUN echo $'memory_limit = $PHP_MEMORY_LIMIT\n\
+max_execution_time = $PHP_MAX_EXEC_TIME\n\
+max_input_time = $PHP_MAX_INPUT_TIME' > /usr/local/etc/php/php.ini.tmpl
+
+RUN apk add --update --virtual .build-deps \
+    gettext && \
+    envsubst < /usr/local/etc/php/php.ini.tmpl > /usr/local/etc/php/php.ini && \
+    apk del .build-deps
 
 WORKDIR /srv/www
 
