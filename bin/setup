@@ -1,6 +1,7 @@
-#!/usr/bin/env bash
-
+#!/bin/bash
 # Set up Magento cron
+
+mkdir -p /srv/www/var/log
 
 echo "* * * * * /usr/local/bin/php /srv/www/bin/magento cron:run | grep -v 'Ran jobs by schedule' >> /srv/www/var/log/magento.cron.log" | crontab -
 (crontab -l 2>/dev/null; echo "* * * * * /usr/local/bin/php /srv/www/bin/magento setup:cron:run >> /srv/www/var/log/setup.cron.log") | crontab -
