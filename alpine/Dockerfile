@@ -1,16 +1,36 @@
 FROM php:7-fpm-alpine
 MAINTAINER Oleg Kulik <olegkulik1985@gmail.com>
 
-RUN docker-php-ext-install \
-    gd \
-    intl \
-    mbstring \
-    mcrypt \
-    pdo_mysql \
-    soap \
-    xsl \
-    zip \
-    bcmath \
+RUN apk add --update \
+     # for all
+    zlib-dev \
+     # for gd
+    freetype-dev \
+    libjpeg-turbo-dev \
+    libpng-dev \
+     # for intl
+    icu-dev \
+     # for mcrypt
+    libmcrypt-dev \
+     # for openssl
+    libcrypto1.0 \
+    libssl1.0 \
+     # for soap
+    libxml2-dev \
+     # for xsl
+    libxslt-dev \
+    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+    && docker-php-ext-install \
+        bcmath \
+        gd \
+        intl \
+        mbstring \
+        mcrypt \
+        openssl \
+        pdo_mysql \
+        soap \
+        xsl \
+        zip \
     # Install composer
     && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php -r "if (hash_file('SHA384', 'composer-setup.php') === 'e115a8dc7871f15d853148a7fbac7da27d6c0030b848d9b3dc09e2a0388afed865e6a3d6b3c0fad45c48e2b5fc1196ae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
