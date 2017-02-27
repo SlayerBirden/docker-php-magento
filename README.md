@@ -4,7 +4,7 @@ Suitable for Magento projects.
 
 Example run command
 
-    docker run slayerbirden/magento-phpfpm
+    docker run slayerbirden/phpfpm
 
 ## About
 
