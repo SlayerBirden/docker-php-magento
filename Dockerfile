@@ -26,13 +26,15 @@ RUN apk add --no-cache --virtual .build-deps \
         bcmath \
         gd \
         intl \
+        ldap \
         mbstring \
         mcrypt \
+        mysqli \
+        opcache \
         pdo_mysql \
         soap \
         xsl \
         zip \
-        ldap \
     && docker-php-ext-enable xdebug \
     # next will add runtime deps for php extensions
     # what this does is checks the necessary packages for php extensions Shared Objects
