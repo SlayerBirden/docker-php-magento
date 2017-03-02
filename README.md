@@ -12,6 +12,8 @@ This is a minimalistic phpfpm container which includes all necessary php extensi
 
 Additionally it includes LDAP extension to work with LDAP-based services and XDebug for testing. Composer is also installed.
 
+The image is also suitable to run other php applications, for example WordPress.
+
 ## PHP Versions
 Current releases are pulled from docker php library images: php:7-fpm-alpine and php:5-fpm-alpine.
 
