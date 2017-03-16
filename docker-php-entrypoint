@@ -1,0 +1,20 @@
+#!/bin/sh
+set -e
+
+# first arg is `-f` or `--some-option`
+if [ "${1#-}" != "$1" ]; then
+    set -- php-fpm "$@"
+fi
+
+if [ -d '/docker-entrypoint-initscripts.d' ]
+then
+    for f in /docker-entrypoint-initscripts.d/*; do
+        case "$f" in
+            *.sh)     echo "$0: running $f"; . "$f" ;;
+            *)        echo "$0: ignoring $f" ;;
+        esac
+        echo
+    done
+fi
+
+exec "$@"

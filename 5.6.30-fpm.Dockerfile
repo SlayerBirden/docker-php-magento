@@ -32,7 +32,6 @@ RUN apt-get update \
          soap \
          xsl \
          zip \
-    && docker-php-ext-enable xdebug \
     # Install composer
     && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php -r "copy('https://composer.github.io/installer.sig', 'signature');" \
@@ -47,6 +46,8 @@ RUN curl -o ioncube.tar.gz http://downloads3.ioncube.com/loader_downloads/ioncub
     && mv ioncube/ioncube_loader_lin_5.6.so /usr/local/lib/php/extensions/* \
     && rm -Rf ioncube.tar.gz ioncube \
     && echo "zend_extension=ioncube_loader_lin_5.6.so" > /usr/local/etc/php/conf.d/00_docker-php-ext-ioncube_loader_lin_5.6.ini
+
+COPY docker-php-entrypoint /usr/local/bin/
 
 VOLUME /srv/www
 WORKDIR /srv/www

@@ -35,7 +35,6 @@ RUN apk add --no-cache --virtual .build-deps \
         soap \
         xsl \
         zip \
-    && docker-php-ext-enable xdebug \
     # next will add runtime deps for php extensions
     # what this does is checks the necessary packages for php extensions Shared Objects
     # and adds those (won't be removed when .build-deps are)
@@ -55,6 +54,8 @@ RUN apk add --no-cache --virtual .build-deps \
     && php -r "if (hash_file('SHA384', 'composer-setup.php') === trim(file_get_contents('signature'))) { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
     && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
     && php -r "unlink('composer-setup.php');"
+
+COPY docker-php-entrypoint /usr/local/bin/
 
 VOLUME /srv/www
 WORKDIR /srv/www
