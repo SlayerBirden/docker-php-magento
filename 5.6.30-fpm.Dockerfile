@@ -3,6 +3,7 @@ MAINTAINER Oleg Kulik <olegkulik1985@gmail.com>
 
 RUN apt-get update \
     && apt-get install -y \
+            cron \
             # dev deps for gd
             libfreetype6-dev \
             libjpeg62-turbo-dev \
