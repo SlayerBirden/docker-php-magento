@@ -10,8 +10,8 @@ if [ -d '/docker-entrypoint-initscripts.d' ]
 then
     for f in /docker-entrypoint-initscripts.d/*; do
         case "$f" in
-            *.sh)     echo "$0: running $f"; . "$f" ;;
-            *)        echo "$0: ignoring $f" ;;
+            *.sh) echo "$0: running $f"; tr -d '\r' < "$f" > /tmp/"$(basename "$f")"; . /tmp/"$(basename "$f")" ;;
+            *)    echo "$0: ignoring $f" ;;
         esac
         echo
     done
