@@ -47,8 +47,18 @@ RUN apk add --no-cache --virtual .build-deps \
                 | sort -u \
         )" \
     && apk add --virtual .phpexts-rundeps $runDeps \
-    && apk del .build-deps \
-    # Install composer
+    && apk del .build-deps
+
+# modify www-data user to have id 1000
+RUN apk add \
+    --no-cache \
+    --repository http://dl-3.alpinelinux.org/alpine/edge/community/ --allow-untrusted \
+    --virtual .shadow-deps \
+    shadow \
+    && usermod -u 1000 www-data \
+    && groupmod -g 1000 www-data \
+    && apk del .shadow-deps \
+# Install composer
     && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php -r "copy('https://composer.github.io/installer.sig', 'signature');" \
     && php -r "if (hash_file('SHA384', 'composer-setup.php') === trim(file_get_contents('signature'))) { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \

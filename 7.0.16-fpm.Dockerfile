@@ -33,12 +33,10 @@ RUN apt-get update \
          soap \
          xsl \
          zip \
-    # Install composer
-    && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php -r "copy('https://composer.github.io/installer.sig', 'signature');" \
-    && php -r "if (hash_file('SHA384', 'composer-setup.php') === trim(file_get_contents('signature'))) { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
-    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
-    && php -r "unlink('composer-setup.php');"
+    # clean up
+    && apt-get clean autoclean \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/*
 
 # install Ioncube
 WORKDIR /tmp
@@ -46,7 +44,16 @@ RUN curl -o ioncube.tar.gz http://downloads3.ioncube.com/loader_downloads/ioncub
     && tar -zxf ioncube.tar.gz \
     && mv ioncube/ioncube_loader_lin_7.0.so /usr/local/lib/php/extensions/* \
     && rm -Rf ioncube.tar.gz ioncube \
-    && echo "zend_extension=ioncube_loader_lin_7.0.so" > /usr/local/etc/php/conf.d/00_docker-php-ext-ioncube_loader_lin_5.6.ini
+    && echo "zend_extension=ioncube_loader_lin_7.0.so" > /usr/local/etc/php/conf.d/00_docker-php-ext-ioncube_loader_lin_5.6.ini \
+    # modify www-data user
+    && usermod -u 1000 www-data \
+    && groupmod -g 1000 www-data \
+    # Install composer
+    && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    && php -r "copy('https://composer.github.io/installer.sig', 'signature');" \
+    && php -r "if (hash_file('SHA384', 'composer-setup.php') === trim(file_get_contents('signature'))) { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
+    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+    && php -r "unlink('composer-setup.php');"
 
 COPY docker-php-entrypoint /usr/local/bin/
 
