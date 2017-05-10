@@ -34,6 +34,7 @@ This is a minimalistic *phpfpm* container which includes all necessary php exten
 - 5.5.X
 - 5.6.30
 - 7.0.16
+- 7.1.4
 
 ## Ioncube
 
