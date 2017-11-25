@@ -1,4 +1,4 @@
-FROM php:7.1.4-fpm-alpine
+FROM php:7.1.11-fpm-alpine
 MAINTAINER Oleg Kulik <olegkulik1985@gmail.com>
 
 RUN apk add --no-cache --virtual .build-deps \
