@@ -44,7 +44,7 @@ RUN curl -o ioncube.tar.gz http://downloads3.ioncube.com/loader_downloads/ioncub
     && tar -zxf ioncube.tar.gz \
     && mv ioncube/ioncube_loader_lin_7.0.so /usr/local/lib/php/extensions/* \
     && rm -Rf ioncube.tar.gz ioncube \
-    && echo "zend_extension=ioncube_loader_lin_7.0.so" > /usr/local/etc/php/conf.d/00_docker-php-ext-ioncube_loader_lin_5.6.ini \
+    && echo "zend_extension=ioncube_loader_lin_7.0.so" > /usr/local/etc/php/conf.d/00_docker-php-ext-ioncube_loader_lin_7.0.ini \
     # modify www-data user
     && usermod -u 1000 www-data \
     && groupmod -g 1000 www-data \
@@ -59,5 +59,8 @@ COPY docker-php-entrypoint /usr/local/bin/
 
 VOLUME /srv/www
 WORKDIR /srv/www
+
+# need to fix permissions for workdir
+RUN chown -R www-data:www-data /srv/www
 
 CMD ["php-fpm"]

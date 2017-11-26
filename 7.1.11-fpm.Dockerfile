@@ -1,4 +1,4 @@
-FROM php:5.6.30-fpm
+FROM php:7.1.11-fpm
 MAINTAINER Oleg Kulik <olegkulik1985@gmail.com>
 
 RUN apt-get update \
@@ -42,9 +42,9 @@ RUN apt-get update \
 WORKDIR /tmp
 RUN curl -o ioncube.tar.gz http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz \
     && tar -zxf ioncube.tar.gz \
-    && mv ioncube/ioncube_loader_lin_5.6.so /usr/local/lib/php/extensions/* \
+    && mv ioncube/ioncube_loader_lin_7.1.so /usr/local/lib/php/extensions/* \
     && rm -Rf ioncube.tar.gz ioncube \
-    && echo "zend_extension=ioncube_loader_lin_5.6.so" > /usr/local/etc/php/conf.d/00_docker-php-ext-ioncube_loader_lin_5.6.ini \
+    && echo "zend_extension=ioncube_loader_lin_7.1.so" > /usr/local/etc/php/conf.d/00_docker-php-ext-ioncube_loader_lin_7.1.ini \
     # modify www-data user
     && usermod -u 1000 www-data \
     && groupmod -g 1000 www-data \
