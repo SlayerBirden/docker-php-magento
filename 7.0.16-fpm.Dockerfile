@@ -60,7 +60,4 @@ COPY docker-php-entrypoint /usr/local/bin/
 VOLUME /srv/www
 WORKDIR /srv/www
 
-# need to fix permissions for workdir
-RUN chown -R www-data:www-data /srv/www
-
 CMD ["php-fpm"]

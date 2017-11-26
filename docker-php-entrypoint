@@ -17,4 +17,7 @@ then
     done
 fi
 
+# need to fix permissions for workdir
+chown -R www-data:www-data /srv/www
+
 exec "$@"
